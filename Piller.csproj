@@ -38,6 +38,7 @@
     <Compile Include="ViewModels\MedicationSummaryListViewModel.cs" />
     <Compile Include="ViewModels\MedicationDosageNavigation.cs" />
     <Compile Include="Services\PermanentStorageService.cs" />
+    <Compile Include="Services\IPermanentStorageService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SQLitePCLRaw.core">
