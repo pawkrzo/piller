@@ -195,6 +195,8 @@
     <Compile Include="Common\Dialog\FormDefinition.cs" />
     <Compile Include="Common\Dialog\ElementTableSource.cs" />
     <Compile Include="Common\Dialog\SingleLineEditCell.cs" />
+    <Compile Include="Views\MedicationSummaryListView.cs" />
+    <Compile Include="Views\MedicationSummaryListViewSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
