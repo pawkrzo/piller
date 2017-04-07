@@ -14,17 +14,22 @@ namespace Piller.ViewModels
 
         string medicationName;
 
-        public string MedicationName
-        {
+        public string MedicationName {
             get { return medicationName; }
-            set { this.RaiseAndSetIfChanged(ref medicationName, value); }
+            set { this.RaiseAndSetIfChanged (ref medicationName, value); }
         }
 
         public RxUI.ReactiveCommand<Unit, bool> Save { get; private set; }
 
         public MedicationDosageViewModel ()
         {
-            this.Save = RxUI.ReactiveCommand.Create<Unit, bool> (_ => { this.storage.SaveAsync<MedicationDosage> (new MedicationDosage { Name = this.medicationName }); return true; });
+            this.Save = RxUI.ReactiveCommand.CreateFromTask<Unit, bool> (async _ => {
+                await this.storage.SaveAsync<MedicationDosage> (new MedicationDosage { Name = this.medicationName });
+                this.Close (this);
+
+                return true;
+            });
+
             this.Save.ThrownExceptions.Subscribe (ex => {
                 // show nice message to the user
             });
