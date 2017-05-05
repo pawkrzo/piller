@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Reactive;
 using MvvmCross.Binding.Droid.Views;
 using Android.Opengl;
+using Piller.Droid.BindingConverters;
 
 namespace Piller.Droid.Views
 {
@@ -81,8 +82,13 @@ namespace Piller.Droid.Views
 			timePicker.Click += (o, e) =>
 			{
 				TimePickerDialog timePickerFragment = new TimePickerDialog(
-					   this,
-                    (s, args) => this.ViewModel.DosageHours.Add(new TimeSpan(args.HourOfDay, args.Minute, 0)),
+                       this,
+                    (s, args) =>
+                    {
+                        // handler jest wołany dwukrotnie: raz bo wybrana została godzina, drugi bo picker został zamknięty - ten musimy zignorować
+	                    if (((TimePicker)s).IsShown)
+	                        this.ViewModel.DosageHours.Add(new TimeSpan(args.HourOfDay, args.Minute, 0));
+                    },
 					   12,
 					   00,
 					   true
@@ -113,13 +119,22 @@ namespace Piller.Droid.Views
 		}
 
 		private MvxFluentBindingDescriptionSet<MedicationDosageView, MedicationDosageViewModel> bindingSet;
-		private void SetBinding()
-		{
-			bindingSet = this.CreateBindingSet<MedicationDosageView, MedicationDosageViewModel>();
+        private void SetBinding()
+        {
+            bindingSet = this.CreateBindingSet<MedicationDosageView, MedicationDosageViewModel>();
 
             //sposob na bezposrednie sluchanie observable. W momencie, gdy CanExecute sie zmieni wykona sie kod z Subscribe
-            this.ViewModel.Delete.CanExecute.Subscribe(canExecute => deleteBtn.Visibility = canExecute ? ViewStates.Visible : ViewStates.Gone );
+            this.ViewModel.Delete.CanExecute.Subscribe(canExecute => deleteBtn.Visibility = canExecute ? ViewStates.Visible : ViewStates.Gone);
 
+            bindingSet.Bind(this.SupportActionBar)
+                      .To(x => x.MedicationName)
+                      .For(v => v.Title)
+                      .WithConversion(new InlineValueConverter<string, string>(medicationName =>
+                      {
+                          if (string.IsNullOrEmpty(medicationName))
+                              return this.ViewModel.Id.HasValue ? "" : AppResources.MedicationDosageViewModel_Title;
+                          return medicationName;
+                      }));
 
 			bindingSet.Bind(nameText)
 					  .To(x => x.MedicationName);

@@ -188,6 +188,9 @@
     <Compile Include="Views\MedicationSummaryAdapter.cs" />
     <Compile Include="Views\MedicationDosageTimeLayout.cs" />
     <Compile Include="Views\MedicationDosageTimeListAdapter.cs" />
+    <Compile Include="BindingConverters\DaysOfWeekConverter.cs" />
+    <Compile Include="BindingConverters\DosageHoursConverter.cs" />
+    <Compile Include="BindingConverters\InlineValueConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -230,6 +233,7 @@
     <Folder Include="Resources\drawable-xxhdpi\" />
     <Folder Include="Resources\drawable-xxxhdpi\" />
     <Folder Include="Resources\menu\" />
+    <Folder Include="BindingConverters\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Vector.Drawable.24.2.1\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Vector.Drawable.24.2.1\build\Xamarin.Android.Support.Vector.Drawable.targets')" />

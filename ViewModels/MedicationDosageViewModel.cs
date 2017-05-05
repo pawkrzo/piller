@@ -17,7 +17,11 @@ namespace Piller.ViewModels
         private IPermanentStorageService storage = Mvx.Resolve<IPermanentStorageService>();
 
         //identyfikator rekordu, uzywany w trybie edycji
-        private int? Id;
+        private int? id;
+        public int? Id { 
+            get { return this.id; }
+            set { this.SetProperty(ref this.id, value); }
+        }
 
         string medicationName;
         public string MedicationName
@@ -163,7 +167,10 @@ namespace Piller.ViewModels
                 .Subscribe(result =>
                 {
                     if (result)
+                    {
+                        Mvx.Resolve<IMvxMessenger>().Publish(new DataChangedMessage(this));
                         this.Close(this);
+                    }
                 });
         }
 
